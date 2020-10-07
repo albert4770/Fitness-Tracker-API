@@ -24,4 +24,19 @@ const getAllActivities = async () => {
 	}
 };
 
-module.exports = { createActivity, getAllActivities };
+const updateActivity = async ({ id, name, description }) => {
+	try {
+		const {
+			rows: [updatedActivity]
+		} = await client.query(
+			`UPDATE activities SET name = $1, description = $2 WHERE id = $3 RETURNING *`,
+			[name, description, id]
+		);
+
+		return updatedActivity;
+	} catch (err) {
+		throw err;
+	}
+};
+
+module.exports = { createActivity, getAllActivities, updateActivity };

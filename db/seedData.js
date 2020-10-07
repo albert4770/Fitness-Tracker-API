@@ -14,7 +14,7 @@ async function dropTables() {
 
 	try {
 		await client.query(`
-            DROP TABLE IF EXISTS "routineActivities";
+            DROP TABLE IF EXISTS routine_activities;
             DROP TABLE IF EXISTS routines;
             DROP TABLE IF EXISTS activities;
             DROP TABLE IF EXISTS users`);
@@ -46,7 +46,7 @@ async function createTables() {
                 name varchar(255) UNIQUE NOT NULL,
                 description TEXT NOT NULL);
     
-            CREATE TABLE "routineActivities"(
+            CREATE TABLE routine_activities(
                 id SERIAL PRIMARY KEY,
                 "routineId" integer REFERENCES routines(id),
                 "activityId" integer REFERENCES activities(id),
