@@ -181,19 +181,26 @@ const getPublicRoutinesByActivity = async ({ activityId }) => {
             left join activities on routine_activities."activityId" = activities.id`
 		);
 
-		const routinesWithActivities = addActivitiesToRoutines(
+		let routinesWithActivities = addActivitiesToRoutines(
 			routines,
 			rActivities
 		);
 
-		let filteredRoutines = routinesWithActivities.filter(routine => {
-			if (containsActivity(routine.activities, activityId) === true) {
-				return routine;
-			}
+		let routineIdMatch = [];
+		routinesWithActivities.forEach(routine => {
+			routine.activities.forEach(activity => {
+				if (activity.id === 4) {
+					routineIdMatch.push(routine.id);
+				}
+			});
 		});
 
-		console.log(filteredRoutines);
-		return filteredRoutines;
+		let routinesByActivityId = routinesWithActivities.filter(routine => {
+			return routineIdMatch.includes(routine.id);
+		});
+
+		console.log(routinesByActivityId);
+		return routinesByActivityId;
 	} catch (err) {
 		throw err;
 	}
