@@ -168,7 +168,9 @@ const getAllRoutinesByUser = async ({ username }) => {
 	}
 };
 
-const getPublicRoutinesByActivity = async ({ activityId }) => {
+const getPublicRoutinesByActivity = async ({ id: activityId }) => {
+	// const { id: activityId } = activity;
+
 	try {
 		const { rows: routines } = await client.query(
 			`select routines.id, "creatorId", "isPublic", name, goal, users.username as "creatorName" from routines 
@@ -189,7 +191,7 @@ const getPublicRoutinesByActivity = async ({ activityId }) => {
 		let routineIdMatch = [];
 		routinesWithActivities.forEach(routine => {
 			routine.activities.forEach(activity => {
-				if (activity.id === 4) {
+				if (activity.id === activityId) {
 					routineIdMatch.push(routine.id);
 				}
 			});
@@ -199,7 +201,6 @@ const getPublicRoutinesByActivity = async ({ activityId }) => {
 			return routineIdMatch.includes(routine.id);
 		});
 
-		console.log(routinesByActivityId);
 		return routinesByActivityId;
 	} catch (err) {
 		throw err;
