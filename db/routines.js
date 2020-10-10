@@ -169,8 +169,6 @@ const getAllRoutinesByUser = async ({ username }) => {
 };
 
 const getPublicRoutinesByActivity = async ({ id: activityId }) => {
-	// const { id: activityId } = activity;
-
 	try {
 		const { rows: routines } = await client.query(
 			`select routines.id, "creatorId", "isPublic", name, goal, users.username as "creatorName" from routines 
@@ -245,14 +243,6 @@ const addActivitiesToRoutines = (routines, rActivities) => {
 	});
 
 	return routines;
-};
-
-const containsActivity = (activities, activityId) => {
-	activities.forEach(activity => {
-		if (activity.id === activityId) {
-			return true;
-		}
-	});
 };
 
 module.exports = {
