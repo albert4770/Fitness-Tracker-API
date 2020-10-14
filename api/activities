@@ -1,0 +1,19 @@
+const express = require('express');
+const activitiesRouter = express.Router();
+const { getAllActivities } = require('../db/activities');
+
+activitiesRouter.get('/', async (req, res, next) => {
+	try {
+		const allActivities = await getAllActivities();
+
+		if (allActivities) {
+			res.send(allActivities);
+		} else {
+			res.send({ message: 'No activities found' });
+		}
+	} catch ({ name, message }) {
+		next({ name, message });
+	}
+});
+
+module.exports = { activitiesRouter };

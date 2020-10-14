@@ -9,18 +9,19 @@ const server = express();
 const { PORT = 3000 } = process.env;
 const { apiRouter } = require('./api/index');
 
-server.use(express.json());
-server.use(morgan('dev'));
 server.use(cors());
+server.use(express.json());
+server.use(express.urlencoded({ extended: true }));
+server.use(morgan('dev'));
 server.use('/api', apiRouter);
 
-server.use((req, res) => {
+server.use((req, res, next) => {
 	res.sendStatus(404);
 });
 
 server.use((error, req, res, next) => {
-	console.log(error);
-	res.status(500).send(error);
+	console.log('Server Log', error);
+	res.send(error);
 });
 
 server.listen(PORT, () => {

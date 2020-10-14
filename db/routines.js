@@ -241,7 +241,6 @@ const addActivitiesToRoutines = (routines, rActivities) => {
 			}
 		});
 	});
-
 	return routines;
 };
 
