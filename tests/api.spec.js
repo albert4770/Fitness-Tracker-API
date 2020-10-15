@@ -116,6 +116,7 @@ describe('API', () => {
     describe('POST /activities (*)', () => {
       it('Creates a new activity', async () => {
         const {data: respondedActivity} = await axios.post(`${API_URL}/api/activities`, activityToCreateAndUpdate, { headers: {'Authorization': `Bearer ${token}`} });
+        console.log(respondedActivity);
         expect(respondedActivity.name).toEqual(activityToCreateAndUpdate.name);
         expect(respondedActivity.description).toEqual(activityToCreateAndUpdate.description);
         activityToCreateAndUpdate = respondedActivity;

@@ -1,6 +1,11 @@
 const express = require('express');
 const activitiesRouter = express.Router();
-const { getAllActivities } = require('../db/activities');
+const {
+	getAllActivities,
+	createActivity,
+	updateActivity
+} = require('../db/activities');
+const { requireUser } = require('./utils');
 
 activitiesRouter.get('/', async (req, res, next) => {
 	try {
@@ -10,6 +15,41 @@ activitiesRouter.get('/', async (req, res, next) => {
 			res.send(allActivities);
 		} else {
 			res.send({ message: 'No activities found' });
+		}
+	} catch ({ name, message }) {
+		next({ name, message });
+	}
+});
+
+activitiesRouter.post('/', requireUser, async (req, res, next) => {
+	try {
+		const { name, description } = req.body;
+
+		if (name && description) {
+			const newActivity = await createActivity({ name, description });
+			res.send(newActivity);
+		} else {
+			res.send({ message: 'Missing fields' });
+		}
+	} catch ({ name, message }) {
+		next({ name, message });
+	}
+});
+
+activitiesRouter.patch('/:activityId', requireUser, async (req, res, next) => {
+	const { name, description } = req.body;
+	const { activityId } = req.params;
+
+	try {
+		if (activityId && name && description) {
+			const updatedActivity = await updateActivity({
+				id: activityId,
+				name,
+				description
+			});
+			res.send(updatedActivity);
+		} else {
+			res.send({ message: 'Missing fields' });
 		}
 	} catch ({ name, message }) {
 		next({ name, message });
