@@ -135,7 +135,9 @@ describe('API', () => {
         const [testRoutine] = await getAllPublicRoutines();
         const [testActivity] = testRoutine.activities;
         const {data: routines} = await axios.get(`${API_URL}/api/activities/${testActivity.id}/routines`);
+        console.log(routines);
         const routinesFromDB = await getPublicRoutinesByActivity(testActivity)
+        console.log(routinesFromDB);
         expect(routines).toEqual(routinesFromDB);
       });
     });

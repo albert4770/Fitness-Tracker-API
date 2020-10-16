@@ -5,6 +5,7 @@ const express = require('express');
 const apiRouter = express.Router();
 const { usersRouter } = require('./users');
 const { activitiesRouter } = require('./activities');
+const { routinesRouter } = require('./routines');
 const { verify } = require('jsonwebtoken');
 const { JWT_SECRET } = process.env;
 const { getUserById } = require('../db/users');
@@ -36,6 +37,7 @@ apiRouter.use('/', async (req, res, next) => {
 
 apiRouter.use('/users', usersRouter);
 apiRouter.use('/activities', activitiesRouter);
+apiRouter.use('/routines', routinesRouter);
 
 apiRouter.get('/health', (req, res, next) => {
 	res.send({ message: 'Server is up and running!' });

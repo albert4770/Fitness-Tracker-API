@@ -5,6 +5,7 @@ const {
 	createActivity,
 	updateActivity
 } = require('../db/activities');
+const { getPublicRoutinesByActivity } = require('../db/routines');
 const { requireUser } = require('./utils');
 
 activitiesRouter.get('/', async (req, res, next) => {
@@ -50,6 +51,23 @@ activitiesRouter.patch('/:activityId', requireUser, async (req, res, next) => {
 			res.send(updatedActivity);
 		} else {
 			res.send({ message: 'Missing fields' });
+		}
+	} catch ({ name, message }) {
+		next({ name, message });
+	}
+});
+
+activitiesRouter.get('/:activityId/routines', async (req, res, next) => {
+	const { activityId } = req.params;
+	const id = parseInt(activityId);
+
+	try {
+		const routinesByActivity = await getPublicRoutinesByActivity({ id });
+
+		if (routinesByActivity.length > 0) {
+			res.send(routinesByActivity);
+		} else {
+			res.send({ message: 'No matching routines found' });
 		}
 	} catch ({ name, message }) {
 		next({ name, message });
