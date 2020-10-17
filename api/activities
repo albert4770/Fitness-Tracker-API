@@ -42,7 +42,7 @@ activitiesRouter.patch('/:activityId', requireUser, async (req, res, next) => {
 	const { activityId } = req.params;
 
 	try {
-		if (activityId && name && description) {
+		if (activityId || name || description) {
 			const updatedActivity = await updateActivity({
 				id: activityId,
 				name,

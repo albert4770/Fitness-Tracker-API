@@ -67,8 +67,24 @@ const destroyRoutineActivity = async id => {
 	}
 };
 
+const getRoutineActivityById = async id => {
+	try {
+		const {
+			rows: [routineActivity]
+		} = await client.query(
+			'select "routineId" from routine_activities where id = $1',
+			[id]
+		);
+
+		return routineActivity;
+	} catch (err) {
+		throw err;
+	}
+};
+
 module.exports = {
 	addActivityToRoutine,
 	updateRoutineActivity,
-	destroyRoutineActivity
+	destroyRoutineActivity,
+	getRoutineActivityById
 };

@@ -6,6 +6,7 @@ const {
 	updateRoutine,
 	destroyRoutine
 } = require('../db/routines');
+const { addActivityToRoutine } = require('../db/routine_activities');
 const { requireUser } = require('./utils');
 
 routinesRouter.get('/', async (req, res, next) => {
@@ -61,6 +62,27 @@ routinesRouter.delete('/:routineId', requireUser, async (req, res, next) => {
 	try {
 		const deletedRoutine = await destroyRoutine(routineId);
 		res.send(deletedRoutine);
+	} catch ({ name, message }) {
+		next({ name, message });
+	}
+});
+
+routinesRouter.post('/:routineId/activities', async (req, res, next) => {
+	const { routineId } = req.params;
+	const { activityId, count, duration } = req.body;
+
+	if (!activityId || !count || !duration) {
+		res.send({ message: 'Missing fields' });
+	}
+
+	try {
+		const newRoutineActivity = await addActivityToRoutine({
+			routineId,
+			activityId,
+			count,
+			duration
+		});
+		res.send(newRoutineActivity);
 	} catch ({ name, message }) {
 		next({ name, message });
 	}
